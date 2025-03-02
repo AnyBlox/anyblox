@@ -1,0 +1,36 @@
+[package]
+name = "anyblox-tools"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "bundler"
+path = "src/bundler.rs"
+
+[[bin]]
+name = "anyblox2csv"
+path = "src/anyblox2csv.rs"
+
+[[bin]]
+name = "viewer"
+path = "src/viewer.rs"
+
+[[bin]]
+name = "hash-wasm"
+path = "src/hash_wasm.rs"
+
+[dependencies]
+anyhow = "1.0.79"
+# Required ipc improvements will be released in August as 53.0.0, for now we refer to unreleased nightly changes.
+arrow = { workspace = true }
+blake3 = "1.6.0"
+chrono = { version = "0.4.38"  }
+clap = { version = "4.4.18", features = ["derive"] }
+csv = "1.3.0"
+indicatif = "0.17.7"
+memmap2 = { version = "0.9.4" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0" }
+toml = { version = "0.8.15" }
+anyblox = { path = "../anyblox" }
+anyblox-format = { path = "../anyblox-format", features = ["serde"] }

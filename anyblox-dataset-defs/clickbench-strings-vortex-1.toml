@@ -1,0 +1,44 @@
+type = "SELF-CONTAINED"
+version = "0.10"
+
+[schema]
+[[schema.fields]]
+name = "rid"
+type = "Int64"
+nullable = false
+
+[[schema.fields]]
+name = "SearchPhrase"
+type = "Utf8View"
+nullable = false
+
+[[schema.fields]]
+name = "MobilePhoneModel"
+type = "Utf8View"
+nullable = false
+
+[[schema.fields]]
+name = "URL"
+type = "Utf8View"
+nullable = false
+
+[[schema.fields]]
+name = "Title"
+type = "Utf8View"
+nullable = false
+
+[[schema.fields]]
+name = "Referer"
+type = "Utf8View"
+nullable = false
+
+[decoder]
+uri = "urn:anyblox:clickbench_vortex"
+description = "decode the ClickBench string columns using Vortex"
+min_batch_size = 122880
+
+[data]
+name = "clickbench_strings_1"
+description = "Part 1 of the ClickBench string table"
+count = 25067520
+size_in_bytes = 6927482000

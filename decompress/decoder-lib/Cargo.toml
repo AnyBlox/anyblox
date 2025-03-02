@@ -1,0 +1,21 @@
+[package]
+name = "decoder-lib"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+
+[dependencies]
+decoder-logger = { path = "../decoder-logger", optional = true }
+lock_api = { version = "0.4.12", optional = true }
+talc = { version = "4.4", optional = true }
+
+[features]
+default = ["wasm-core", "panic-handler"]
+alloc = ["dep:lock_api", "dep:talc"]
+log = ["dep:decoder-logger"]
+std = []
+panic-handler = []
+wasm-core = []

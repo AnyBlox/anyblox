@@ -1,0 +1,27 @@
+type = "SELF-CONTAINED"
+version = "0.8"
+
+[schema]
+[[schema.fields]]
+name = "nppes_provider_first_name"
+type = "Utf8"
+nullable = true
+
+[[schema.fields]]
+name = "nppes_provider_last_org_name"
+type = "Utf8"
+nullable = true
+
+[[schema.fields]]
+name = "nppes_provider_state"
+type = "Utf8"
+nullable = true
+
+[decoder]
+name = "taxpayer_fsst"
+description = "decode three taxpayer columns from FSST compression"
+
+[data]
+name = "Taxpayer_1.fsst"
+description = "three string columns from Taxpayer_1.csv dataset compressed with FSST"
+count = 1_000

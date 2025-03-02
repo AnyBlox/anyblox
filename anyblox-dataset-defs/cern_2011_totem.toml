@@ -1,0 +1,284 @@
+type = "SELF-CONTAINED"
+version = "0.10"
+
+[schema]
+[[schema.fields]]
+name = "track_rp_21_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_21_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_21_valid"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_25_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_25_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_25_valid"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_120_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_120_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_120_valid"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_124_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_124_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_124_valid"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_20_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_20_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_20_valid"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_24_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_24_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_24_valid"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_121_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_121_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_121_valid"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_125_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_125_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_125_valid"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_22_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_22_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_22_valid"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_23_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_23_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_23_valid"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_122_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_122_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_122_valid"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_123_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_123_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "track_rp_123_valid"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "timestamp"
+type = "UInt32"
+nullable = false
+
+[[schema.fields]]
+name = "run_no"
+type = "UInt32"
+nullable = false
+
+[[schema.fields]]
+name = "bunch_num"
+type = "UInt32"
+nullable = false
+
+[[schema.fields]]
+name = "event_num"
+type = "UInt32"
+nullable = false
+
+[[schema.fields]]
+name = "trigger_num"
+type = "UInt32"
+nullable = false
+
+[[schema.fields]]
+name = "input_status_bits"
+type = "UInt32"
+nullable = false
+
+[[schema.fields]]
+name = "dataset_num"
+type = "Int32"
+nullable = false
+
+[[schema.fields]]
+name = "vtx_x_L"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "vtx_x_R"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "vtx_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "th_y_L"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "th_y_R"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "th_y"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "th_x_L"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "th_x_R"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "th_x"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "th"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "t"
+type = "Float64"
+nullable = false
+
+[decoder]
+uri = "urn:anyblox:anyroot"
+description = "decode selected columns from a CERN Root dataset"
+checksum_blake3 = "601c48b5d18e9380fc69eaf189abe6080c0b083fda4ec96d65fca2a72f7e5fe1"
+min_batch_size = 150_000
+
+[data]
+name = "prepared_data.root"
+description = "The dataset contains columns with detailed information from the 2011 TOTEM measurement conducted with the Roman Pot detectors."
+count = 12_606_699

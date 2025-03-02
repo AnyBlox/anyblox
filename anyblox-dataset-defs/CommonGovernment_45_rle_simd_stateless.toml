@@ -1,0 +1,18 @@
+type = "EXTENSION"
+version = "0.9"
+
+[schema]
+[[schema.fields]]
+name = "psc_key"
+type = "Int32"
+nullable = false
+
+[decoder]
+name = "rle_simd"
+description = "decode RLE (vectorized but without state)"
+
+[data]
+name = "CommonGovernment_45_rle"
+description = "Any RLE encoded column of Int32 values from the CommonGovernment dataset"
+count = 141_123_827
+

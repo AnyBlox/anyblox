@@ -1,0 +1,13 @@
+type = "SELF-CONTAINED"
+version = "0.9"
+
+schema = { fields = [] }
+
+[decoder]
+name = "empty_decoder"
+description = "completely empty decoder"
+
+[data]
+name = "none"
+description = "no data"
+count = 0

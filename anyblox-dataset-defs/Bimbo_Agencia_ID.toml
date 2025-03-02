@@ -1,0 +1,18 @@
+type = "SELF-CONTAINED"
+version = "0.9"
+
+[schema]
+[[schema.fields]]
+name = "Agencia_ID"
+type = "Int32"
+nullable = false
+
+[decoder]
+name = "rle"
+description = "decode RLE (no vectorization)"
+
+[data]
+name = "Bimbo_Agencia_ID"
+description = "First column of the Bimbo PublicBIBenchmark dataset run-length encoded"
+count = 74_180_464
+

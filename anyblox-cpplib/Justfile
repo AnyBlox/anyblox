@@ -1,0 +1,30 @@
+[private]
+default: init build
+
+init:
+  ln -f -s ../../../target/release/libanyblox_ffi.a ./cpp/lib/libanyblox_ffi.a
+  ln -f -s ../../../target/debug/libanyblox_ffi.a ./cpp/lib/libanyblox_ffid.a
+
+build: build-rust build-cpp build-jni
+
+build-rust:
+  cargo build -p anyblox-cpplib
+  cargo build -p anyblox-cpplib --release
+  cbindgen ./rust --config cbindgen.toml --output ./cpp/include/gen/anyblox_ffi.hpp
+
+build-cpp:
+  cmake ./cpp -B ./cpp/cmake-build-debug -DCMAKE_BUILD_TYPE=Debug
+  cmake ./cpp -B ./cpp/cmake-build-relwithdebinfo -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  cmake ./cpp -B ./cpp/cmake-build-release -DCMAKE_BUILD_TYPE=Release
+  cmake --build ./cpp/cmake-build-debug -j8
+  cmake --build ./cpp/cmake-build-relwithdebinfo -j8
+  cmake --build ./cpp/cmake-build-release -j8
+
+build-jni:
+  RUSTFLAGS="-C target-feature=+avx512f,+avx512vbmi2,+avx2" cross build --target x86_64-unknown-linux-gnu -p anyblox-jnilib
+  RUSTFLAGS="-C target-feature=+avx512f,+avx512vbmi2,+avx2" cross build --target x86_64-unknown-linux-gnu -p anyblox-jnilib --release
+
+install: build-rust build-cpp
+  sudo cmake --build ./cpp/cmake-build-debug -j8 -t install
+  sudo cmake --build ./cpp/cmake-build-relwithdebinfo -j8 -t install
+  sudo cmake --build ./cpp/cmake-build-release -j8 -t install

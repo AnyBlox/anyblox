@@ -1,0 +1,508 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'ebpf_decompress'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=ebpf-decompress"
+                ],
+                "filter": {
+                    "name": "ebpf_decompress",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'base_decompress'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=base-decompress"
+                ],
+                "filter": {
+                    "name": "base_decompress",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'runner'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=runner"
+                ],
+                "filter": {
+                    "name": "runner",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'runner'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=runner",
+                    "--package=runner"
+                ],
+                "filter": {
+                    "name": "runner",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "-a",
+                "int-for"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'runner'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=runner",
+                    "--package=runner"
+                ],
+                "filter": {
+                    "name": "runner",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'runtime'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=runtime"
+                ],
+                "filter": {
+                    "name": "runtime",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'runtime'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=runtime",
+                    "--package=runtime"
+                ],
+                "filter": {
+                    "name": "runtime",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'runtime'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=runtime",
+                    "--package=runtime"
+                ],
+                "filter": {
+                    "name": "runtime",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'compress'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=compress"
+                ],
+                "filter": {
+                    "name": "compress",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'compress'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=compress",
+                    "--package=compress"
+                ],
+                "filter": {
+                    "name": "compress",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "-f",
+                "./dataset/0_Test.integer",
+                "-a",
+                "int-for"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'compress'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=compress",
+                    "--package=compress"
+                ],
+                "filter": {
+                    "name": "compress",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'arrow-test'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=arrow-test",
+                    "--package=arrow-test"
+                ],
+                "filter": {
+                    "name": "arrow-test",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "./dataset/0_Test.integer",
+                "./debug.arrow"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'odph'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=odph"
+                ],
+                "filter": {
+                    "name": "odph",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "env": {
+                "LD_LIBRARY_PATH": "/home/mat/src/portable-decompress/odph/lib"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'ignition-cli'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=ignition-cli",
+                    "--package=ignition"
+                ],
+                "filter": {
+                    "name": "ignition-cli",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "env": {
+                "RUST_BACKTRACE": "1",
+                "RUST_LOG": "info,ignition=debug"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'bundler'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=bundler",
+                    "--package=ignition-tools"
+                ],
+                "filter": {
+                    "name": "bundler",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "--metadata-path",
+                "./ignition-tools/example-bundle/trunc8-extension.toml",
+                "--wasm-path",
+                "./decompress/target/wasm32-unknown-unknown/release/trunc8.wasm",
+                "--output-path",
+                "/tmp/ignition"
+            ],
+            "env": {
+                "RUST_BACKTRACE": "1",
+                "RUST_LOG": "info,ignition=debug"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'viewer'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=viewer",
+                    "--package=ignition-tools"
+                ],
+                "filter": {
+                    "name": "viewer",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "/tmp/ignition",
+            ],
+            "env": {
+                "RUST_BACKTRACE": "1",
+                "RUST_LOG": "info,ignition=debug"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'taxpayer'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=taxpayer",
+                    "--package=dataset-utils"
+                ],
+                "filter": {
+                    "name": "taxpayer",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "../PublicBIBenchmark/Taxpayer_1_sample.csv",
+                "./dataset/taxpayer_sample.bin",
+            ],
+            "env": {
+                "RUST_BACKTRACE": "1",
+                "RUST_LOG": "info,ignition=debug"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'tpch_lineitem'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=tpch_lineitem",
+                    "--package=dataset-utils"
+                ],
+                "filter": {
+                    "name": "tpch_lineitem",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "./dataset-utils/tpch_lineitem.csv",
+                "./dataset-utils/tpch_lineitem.bin"
+            ],
+            "env": {
+                "RUST_BACKTRACE": "1",
+                "RUST_LOG": "info,ignition=debug"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'ignition2csv'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=ignition2csv",
+                    "--package=ignition-tools"
+                ],
+                "filter": {
+                    "name": "ignition2csv",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "--ignition-file",
+                "./dataset/tpch-linestatus-rlebitpack.ignition",
+                "--output-path",
+                "/tmp/tpch-linestatus-rlebitpack_native.csv",
+                "--native",
+                "--byte-is-char"
+            ],
+            "env": {
+                "RUST_BACKTRACE": "1",
+                "RUST_LOG": "info,ignition=debug"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'ignition-bench'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=ignition-bench",
+                    "--package=ignition-bench"
+                ],
+                "filter": {
+                    "name": "ignition-bench",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "./dataset/taxpayer.ignition",
+                "0",
+                "9153273",
+                "900",
+                "native",
+                "-t",
+                "16"
+            ],
+            "env": {
+                "RUST_BACKTRACE": "1",
+                "RUST_LOG": "info,ignition=debug"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'ignition-ablation'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=ignition-ablation",
+                    "--package=ignition-bench"
+                ],
+                "filter": {
+                    "name": "ignition-ablation",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "hook-time",
+                "-p",
+                "./dataset/taxpayer_large.ignition",
+                "-t",
+                "1",
+                "-s",
+                "1000"
+            ],
+            "env": {
+                "RUST_BACKTRACE": "1",
+                "RUST_LOG": "info,ignition=debug"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'ignition-parquet-rle-linestatus'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=ignition-parquet-rle-linestatus",
+                    "--package=ignition-parquet"
+                ],
+                "filter": {
+                    "name": "ignition-parquet-rle-linestatus",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "--lineitem-csv",
+                "../tpch-dbgen/scale1/lineitem.tbl",
+                "--wasm-path",
+                "./decompress/target/wasm32-unknown-unknown/release/rle.wasm",
+                "-o",
+                "./lineitem-ignition.parquet"
+            ],
+            "env": {
+                "RUST_BACKTRACE": "1",
+                "RUST_LOG": "info,ignition=debug"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+    ]
+}

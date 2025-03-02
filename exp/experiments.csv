@@ -1,0 +1,3 @@
+name,in B,out B,rows,batch,threads
+native_taxpayer_all_columns_t31,176444880,256153554,9153273,2500,31
+wasm_taxpayer_all_columns_t31,176444880,256153554,9153273,900,31

@@ -1,0 +1,2 @@
+[target.x86_64-unknown-linux-gnu]
+rustflags = ["-C", "link-args=-fuse-ld=mold", "-C", "target-feature=+avx512f,+avx512vbmi2,+avx2"]

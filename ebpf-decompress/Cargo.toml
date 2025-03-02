@@ -1,0 +1,11 @@
+[package]
+name = "ebpf-decompress"
+version = "0.1.0"
+edition = "2021"
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+libbpf-rs = "0.22"
+memmap2 = "0.9.0"
+probe = "0.5.1"
+rand = { version = "0.8.5", features = [] }

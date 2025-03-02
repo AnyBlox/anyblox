@@ -1,0 +1,23 @@
+[package]
+name = "cern-root"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+arrow = { version = "54.2.0", features = [] }
+decoder-lib = { path = "../decoder-lib", default-features = false, features = [
+    "alloc",
+    "panic-handler",
+    "std",
+    "wasm-core",
+] }
+lock_api = "0.4.12"
+talc = "4.4"
+anyroot = { path = "../../vendored/anyblox_root" }
+
+[features]
+default = []
+log = ["decoder-lib/log"]

@@ -1,0 +1,17 @@
+[package]
+name = "anyblox-jnilib"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "anyblox_jni"
+crate-type = ["cdylib"]
+
+[dependencies]
+# Required ipc improvements will be released in August as 53.0.0, for now we refer to unreleased nightly changes.
+arrow = { workspace = true }
+anyblox = { path = "../../anyblox", default-features = false }
+anyblox-format = { path = "../../anyblox-format", features = ["serde"] }
+jni = "0.21"
+regex = "1.11"
+thiserror = "1.0"

@@ -1,0 +1,16 @@
+type = "Extension"
+
+[schema]
+[[schema.fields]]
+name = "col1"
+type = "UInt32"
+nullable = false
+
+[decoder]
+name = "trunc8"
+description = "expand 8bit integers into 32bit integers"
+
+[data]
+name = "random"
+description = "randomly generated ints in [0, 255]"
+count = 1024

@@ -1,0 +1,21 @@
+[package]
+name = "anyblox-cpplib"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "anyblox_ffi"
+crate-type = ["staticlib"]
+
+[dependencies]
+# Required ipc improvements will be released in August as 53.0.0, for now we refer to unreleased nightly changes.
+arrow = { workspace = true }
+anyblox = { path = "../../anyblox", default-features = false }
+anyblox-format = { path = "../../anyblox-format", features = ["serde"] }
+
+[dev-dependencies]
+rustix = "0.38.31"
+test-log = { version = "0.2.16", features = ["trace"] }
+
+[build-dependencies]
+cxx-build = "1.0"

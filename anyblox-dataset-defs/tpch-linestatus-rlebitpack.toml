@@ -1,0 +1,17 @@
+type = "SELF-CONTAINED"
+version = "0.8"
+
+[schema]
+[[schema.fields]]
+name = "l_linestatus"
+type = "UInt8"
+nullable = false
+
+[decoder]
+name = "rle_linestatus"
+description = "decode the TPC-H l_linestatus column encoded with Parquet's bitpacking-RLE hybrid"
+
+[data]
+name = "TPC-H-l_linestatus-rlebitpack"
+description = "The TPC-H l_linestatus column dictionary and rle-bitpack encoded using Parquet's default boolean encoding"
+count = 6001215

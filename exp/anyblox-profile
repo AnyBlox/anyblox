@@ -1,0 +1,185 @@
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+select         s_name,         count(*) as numwait from         supplier,         lineitem l1,         orders,         nation where         s_suppkey = l1.l_suppkey         and o_orderkey = l1.l_orderkey         and o_orderstatus = 'F'         and l1.l_receiptdate > l1.l_commitdate         and exists (                 select                         *                 from                         lineitem l2                 where                         l2.l_orderkey = l1.l_orderkey                         and l2.l_suppkey <> l1.l_suppkey         )         and not exists (                 select                         *                 from                         lineitem l3                 where                         l3.l_orderkey = l1.l_orderkey                         and l3.l_suppkey <> l1.l_suppkey                         and l3.l_receiptdate > l3.l_commitdate         )         and s_nationkey = n_nationkey         and n_name = 'SAUDI ARABIA' group by         s_name order by         numwait desc,         s_name limit         100;
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││              Total Time: 13.63s              ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────┐
+│                    : 0.0000s                   │
+│┌──────────────────────────────────────────────┐│
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────┐
+│                    : 0.0000s                   │
+│┌──────────────────────────────────────────────┐│
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────┐
+│                    : 0.0000s                   │
+│┌──────────────────────────────────────────────┐│
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌─────────────────┐
+│      QUERY      │
+└────────┬────────┘
+┌────────┴────────┐
+│      TOP_N      │
+│    ──────────   │
+│     Top: 100    │
+│                 │
+│    Order By:    │
+│count_star() DESC│
+│ supplier.s_name │
+│        ASC      │
+│                 │
+│     100 Rows    │
+│     (0.00s)     │
+└────────┬────────┘
+┌────────┴────────┐
+│  HASH_GROUP_BY  │
+│    ──────────   │
+│    Groups: #0   │
+│                 │
+│   Aggregates:   │
+│   count_star()  │
+│                 │
+│    7984 Rows    │
+│     (0.00s)     │
+└────────┬────────┘
+┌────────┴────────┐
+│    PROJECTION   │
+│    ──────────   │
+│      s_name     │
+│                 │
+│    79466 Rows   │
+│     (0.00s)     │
+└────────┬────────┘
+┌────────┴────────┐
+│ RIGHT_DELIM_JOIN│
+│    ──────────   │
+│    Join Type:   │
+│    RIGHT_ANTI   │
+│                 │
+│   Conditions:   │
+│  l_orderkey IS  │
+│   NOT DISTINCT  │
+│  FROM l_orderkey│
+│ l_suppkey IS NOT├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────┐
+│   DISTINCT FROM │                                                                                                                                              │                                                        │
+│     l_suppkey   │                                                                                                                                              │                                                        │
+│                 │                                                                                                                                              │                                                        │
+│   Delim Index:  │                                                                                                                                              │                                                        │
+│        2        │                                                                                                                                              │                                                        │
+│                 │                                                                                                                                              │                                                        │
+│      0 Rows     │                                                                                                                                              │                                                        │
+│     (0.16s)     │                                                                                                                                              │                                                        │
+└────────┬────────┘                                                                                                                                              │                                                        │
+┌────────┴────────┐                                                                                                                                     ┌────────┴────────┐                                      ┌────────┴────────┐
+│ RIGHT_DELIM_JOIN│                                                                                                                                     │    HASH_JOIN    │                                      │  HASH_GROUP_BY  │
+│    ──────────   │                                                                                                                                     │    ──────────   │                                      │    ──────────   │
+│    Join Type:   │                                                                                                                                     │    Join Type:   │                                      │     Groups:     │
+│    RIGHT_SEMI   │                                                                                                                                     │    RIGHT_ANTI   │                                      │        #1       │
+│                 │                                                                                                                                     │                 │                                      │        #2       │
+│   Conditions:   │                                                                                                                                     │   Conditions:   │                                      │                 │
+│  l_orderkey IS  │                                                                                                                                     │  l_orderkey IS  │                                      │                 │
+│   NOT DISTINCT  │                                                                                                                                     │   NOT DISTINCT  │                                      │                 │
+│  FROM l_orderkey│                                                                                                                                     │  FROM l_orderkey│                                      │                 │
+│ l_suppkey IS NOT├──────────────────────────────────────────────────────────────────┬────────────────────────────────────────────────────────┐         │ l_suppkey IS NOT├────────────────────────────┐         │                 │
+│   DISTINCT FROM │                                                                  │                                                        │         │   DISTINCT FROM │                            │         │                 │
+│     l_suppkey   │                                                                  │                                                        │         │     l_suppkey   │                            │         │                 │
+│                 │                                                                  │                                                        │         │                 │                            │         │                 │
+│   Delim Index:  │                                                                  │                                                        │         │                 │                            │         │                 │
+│        1        │                                                                  │                                                        │         │                 │                            │         │                 │
+│                 │                                                                  │                                                        │         │                 │                            │         │                 │
+│      0 Rows     │                                                                  │                                                        │         │    79466 Rows   │                            │         │   1411357 Rows  │
+│     (0.34s)     │                                                                  │                                                        │         │     (0.15s)     │                            │         │     (0.01s)     │
+└────────┬────────┘                                                                  │                                                        │         └────────┬────────┘                            │         └─────────────────┘
+┌────────┴────────┐                                                         ┌────────┴────────┐                                      ┌────────┴────────┐┌────────┴────────┐                   ┌────────┴────────┐
+│    HASH_JOIN    │                                                         │    HASH_JOIN    │                                      │  HASH_GROUP_BY  ││    PROJECTION   │                   │    DUMMY_SCAN   │
+│    ──────────   │                                                         │    ──────────   │                                      │    ──────────   ││    ──────────   │                   │    ──────────   │
+│    Join Type:   │                                                         │    Join Type:   │                                      │     Groups:     ││    l_orderkey   │                   │                 │
+│      INNER      │                                                         │    RIGHT_SEMI   │                                      │        #1       ││    l_suppkey    │                   │                 │
+│                 │                                                         │                 │                                      │        #2       ││                 │                   │                 │
+│   Conditions:   │                                                         │   Conditions:   │                                      │                 ││                 │                   │                 │
+│   o_orderkey =  │                                                         │  l_orderkey IS  │                                      │                 ││                 │                   │                 │
+│    l_orderkey   ├─────────┐                                               │   NOT DISTINCT  ├────────────────────────────┐         │                 ││                 │                   │                 │
+│                 │         │                                               │  FROM l_orderkey│                            │         │                 ││                 │                   │                 │
+│                 │         │                                               │ l_suppkey IS NOT│                            │         │                 ││                 │                   │                 │
+│                 │         │                                               │   DISTINCT FROM │                            │         │                 ││                 │                   │                 │
+│                 │         │                                               │     l_suppkey   │                            │         │                 ││                 │                   │                 │
+│                 │         │                                               │                 │                            │         │                 ││                 │                   │                 │
+│   1464370 Rows  │         │                                               │   1411363 Rows  │                            │         │   1464364 Rows  ││   3690027 Rows  │                   │      0 Rows     │
+│     (0.63s)     │         │                                               │     (0.30s)     │                            │         │     (0.01s)     ││     (0.00s)     │                   │     (0.00s)     │
+└────────┬────────┘         │                                               └────────┬────────┘                            │         └─────────────────┘└────────┬────────┘                   └─────────────────┘
+┌────────┴────────┐┌────────┴────────┐                                      ┌────────┴────────┐                   ┌────────┴────────┐                   ┌────────┴────────┐
+│    TABLE_SCAN   ││    HASH_JOIN    │                                      │    PROJECTION   │                   │    DUMMY_SCAN   │                   │    HASH_JOIN    │
+│    ──────────   ││    ──────────   │                                      │    ──────────   │                   │    ──────────   │                   │    ──────────   │
+│      orders     ││    Join Type:   │                                      │    l_orderkey   │                   │                 │                   │    Join Type:   │
+│                 ││      INNER      │                                      │    l_suppkey    │                   │                 │                   │      INNER      │
+│   Projections:  ││                 │                                      │                 │                   │                 │                   │                 │
+│    o_orderkey   ││   Conditions:   │                                      │                 │                   │                 │                   │   Conditions:   │
+│                 ││   l_suppkey =   │                                      │                 │                   │                 │                   │   l_orderkey =  │
+│     Filters:    ││     s_suppkey   ├─────────┐                            │                 │                   │                 │                   │    l_orderkey   ├─────────┐
+│ o_orderstatus='F││                 │         │                            │                 │                   │                 │                   │   l_suppkey !=  │         │
+│' AND o_orderstat││                 │         │                            │                 │                   │                 │                   │     l_suppkey   │         │
+│  us IS NOT NULL ││                 │         │                            │                 │                   │                 │                   │                 │         │
+│                 ││                 │         │                            │                 │                   │                 │                   │                 │         │
+│  14617137 Rows  ││   3033530 Rows  │         │                            │   5844460 Rows  │                   │      0 Rows     │                   │   3690027 Rows  │         │
+│     (0.37s)     ││     (1.33s)     │         │                            │     (0.01s)     │                   │     (0.00s)     │                   │     (4.44s)     │         │
+└─────────────────┘└────────┬────────┘         │                            └────────┬────────┘                   └─────────────────┘                   └────────┬────────┘         │
+                   ┌────────┴────────┐┌────────┴────────┐                   ┌────────┴────────┐                                                         ┌────────┴────────┐┌────────┴────────┐
+                   │    PROJECTION   ││    HASH_JOIN    │                   │    HASH_JOIN    │                                                         │    DELIM_SCAN   ││      FILTER     │
+                   │    ──────────   ││    ──────────   │                   │    ──────────   │                                                         │    ──────────   ││    ──────────   │
+                   │    l_orderkey   ││    Join Type:   │                   │    Join Type:   │                                                         │   Delim Index:  ││ (l_receiptdate >│
+                   │    l_suppkey    ││      INNER      │                   │      INNER      │                                                         │        2        ││   l_commitdate) │
+                   │                 ││                 │                   │                 │                                                         │                 ││                 │
+                   │                 ││   Conditions:   │                   │   Conditions:   │                                                         │                 ││                 │
+                   │                 ││  s_nationkey =  │                   │   l_orderkey =  │                                                         │                 ││                 │
+                   │                 ││    n_nationkey  │                   │    l_orderkey   │                                                         │                 ││                 │
+                   │                 ││                 ├─────────┐         │   l_suppkey !=  ├─────────┐                                               │                 ││                 │
+                   │                 ││    Build Min:   │         │         │     l_suppkey   │         │                                               │                 ││                 │
+                   │                 ││        0        │         │         │                 │         │                                               │                 ││                 │
+                   │                 ││                 │         │         │                 │         │                                               │                 ││                 │
+                   │                 ││    Build Max:   │         │         │                 │         │                                               │                 ││                 │
+                   │                 ││        24       │         │         │                 │         │                                               │                 ││                 │
+                   │                 ││                 │         │         │                 │         │                                               │                 ││                 │
+                   │  75869487 Rows  ││    7984 Rows    │         │         │   5844460 Rows  │         │                                               │      0 Rows     ││  75869487 Rows  │
+                   │     (0.01s)     ││     (0.00s)     │         │         │     (1.23s)     │         │                                               │     (0.00s)     ││     (0.14s)     │
+                   └────────┬────────┘└────────┬────────┘         │         └────────┬────────┘         │                                               └─────────────────┘└────────┬────────┘
+                   ┌────────┴────────┐┌────────┴────────┐┌────────┴────────┐┌────────┴────────┐┌────────┴────────┐                                                         ┌────────┴────────┐
+                   │      FILTER     ││    TABLE_SCAN   ││    TABLE_SCAN   ││    TABLE_SCAN   ││    DELIM_SCAN   │                                                         │    TABLE_SCAN   │
+                   │    ──────────   ││    ──────────   ││    ──────────   ││    ──────────   ││    ──────────   │                                                         │    ──────────   │
+                   │ (l_receiptdate >││     supplier    ││      nation     ││    Function:    ││   Delim Index:  │                                                         │    Function:    │
+                   │   l_commitdate) ││                 ││                 ││     IGNITION    ││        1        │                                                         │     IGNITION    │
+                   │                 ││   Projections:  ││   Projections:  ││                 ││                 │                                                         │                 │
+                   │                 ││    s_suppkey    ││   n_nationkey   ││   Projections:  ││                 │                                                         │   Projections:  │
+                   │                 ││   s_nationkey   ││                 ││    l_orderkey   ││                 │                                                         │    l_orderkey   │
+                   │                 ││      s_name     ││     Filters:    ││    l_suppkey    ││                 │                                                         │    l_suppkey    │
+                   │                 ││                 ││  n_name='SAUDI  ││                 ││                 │                                                         │   l_commitdate  │
+                   │                 ││                 ││    ARABIA' AND  ││                 ││                 │                                                         │  l_receiptdate  │
+                   │                 ││                 ││   n_name IS NOT ││                 ││                 │                                                         │                 │
+                   │                 ││                 ││       NULL      ││                 ││                 │                                                         │                 │
+                   │                 ││                 ││                 ││                 ││                 │                                                         │                 │
+                   │  75869487 Rows  ││    7984 Rows    ││      1 Rows     ││  119994608 Rows ││      0 Rows     │                                                         │  119994608 Rows │
+                   │     (0.14s)     ││     (0.01s)     ││     (0.00s)     ││     (0.56s)     ││     (0.00s)     │                                                         │     (0.88s)     │
+                   └────────┬────────┘└─────────────────┘└─────────────────┘└─────────────────┘└─────────────────┘                                                         └─────────────────┘
+                   ┌────────┴────────┐
+                   │    TABLE_SCAN   │
+                   │    ──────────   │
+                   │    Function:    │
+                   │     IGNITION    │
+                   │                 │
+                   │   Projections:  │
+                   │    l_orderkey   │
+                   │    l_suppkey    │
+                   │   l_commitdate  │
+                   │  l_receiptdate  │
+                   │                 │
+                   │  119994608 Rows │
+                   │     (0.88s)     │
+                   └─────────────────┘

@@ -1,0 +1,139 @@
+type = "SELF-CONTAINED"
+version = "0.10"
+
+[schema]
+[[schema.fields]]
+name = "B_FlightDistance"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "B_VertexChi2"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H1_PX"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H1_PY"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H1_PZ"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H1_ProbK"
+type = "Boolean"
+nullable = false
+
+[[schema.fields]]
+name = "H1_ProbPi"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H1_Charge"
+type = "Int32"
+nullable = false
+
+[[schema.fields]]
+name = "H1_isMuon"
+type = "Int32"
+nullable = false
+
+[[schema.fields]]
+name = "H1_IpChi2"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H2_PX"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H2_PY"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H2_PZ"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H2_ProbK"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H2_ProbPi"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H2_isMuon"
+type = "Int32"
+nullable = false
+
+[[schema.fields]]
+name = "H2_IpChi2"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H3_PX"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H3_PY"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H3_PZ"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H3_ProbK"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H3_ProbPi"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "H3_Charge"
+type = "Int32"
+nullable = false
+
+[[schema.fields]]
+name = "H3_isMuon"
+type = "Int32"
+nullable = false
+
+[[schema.fields]]
+name = "H3_IpChi2"
+type = "Float64"
+nullable = false
+
+[decoder]
+uri = "urn:anyblox:anyroot"
+description = "decode selected columns from a CERN Root dataset"
+checksum_blake3 = "601c48b5d18e9380fc69eaf189abe6080c0b083fda4ec96d65fca2a72f7e5fe1"
+min_batch_size = 150_000
+
+[data]
+name = "b2hhh.uncomp.root"
+description = "The B2HHH dataset, uncompressed."
+count = 8_556_118

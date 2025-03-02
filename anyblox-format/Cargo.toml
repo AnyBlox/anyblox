@@ -1,0 +1,15 @@
+[package]
+name = "anyblox-format"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+arrow = { workspace = true }
+serde = { version = "1.0", features = ["derive"], optional = true }
+serde_json = { version = "1.0", optional = true }
+toml = { version = "0.8.15", optional = true }
+thiserror = "1.0"
+
+[features]
+serde = ["dep:serde", "dep:serde_json", "dep:toml"]
+default = []

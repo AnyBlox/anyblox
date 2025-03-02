@@ -1,0 +1,19 @@
+[package]
+name = "fsst"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+decoder-lib = { path = "../decoder-lib", default-features = false, features = [
+    "panic-handler",
+    "wasm-core",
+] }
+
+[features]
+default = []
+log = ["decoder-lib/log"]

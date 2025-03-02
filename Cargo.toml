@@ -1,0 +1,46 @@
+[workspace]
+members = [
+    "arrow-test",
+    "base-decompress",
+    "compress",
+    "dataset-utils",
+    "ebpf-decompress",
+    "fsst-rs",
+    "anyblox-cpplib/jni",
+    "anyblox-cpplib/rust",
+    "anyblox",
+    "anyblox-tools",
+    "anyblox-format",
+    "anyblox-bench",
+    "anyblox-parquet",
+    "arrow-flight-demo",
+]
+exclude = ["vendored", "decompress"]
+resolver = "2"
+
+[workspace.package]
+version = "0.8.0"
+homepage = "https://gitlab.db.in.tum.de/MatG/portable-decompress"
+repository = "https://gitlab.db.in.tum.de/MatG/portable-decompress"
+authors = ["Mateusz Gienieczko <mat@gienieczko.com>"]
+license = "MIT"
+keywords = []
+edition = "2021"
+rust-version = "1.62"
+
+[profile.release]
+debug = 1
+opt-level = 3
+lto = "fat"
+
+[profile.bench]
+debug = 1
+opt-level = 3
+lto = "fat"
+
+[workspace.dependencies]
+arrow = { path = "./vendored/arrow-rs/arrow" }
+arrow-flight = { path = "./vendored/arrow-rs/arrow-flight" }
+parquet = { path = "./vendored/arrow-rs/parquet" }
+tokio = { version = "1.36.0", features = ["full"] }
+vortex = { path = "./vendored/vortex/vortex" }

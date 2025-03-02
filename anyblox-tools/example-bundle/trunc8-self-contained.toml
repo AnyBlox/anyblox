@@ -1,0 +1,17 @@
+type = "SELF-CONTAINED"
+version = "0.6"
+
+[schema]
+[[schema.fields]]
+name = "col1"
+type = "UInt32"
+nullable = true
+
+[decoder]
+name = "trunc8"
+description = "expand 8bit integers into 32bit integers"
+
+[data]
+name = "random"
+description = "randomly generated ints in [0, 255]"
+count = 10_000_000

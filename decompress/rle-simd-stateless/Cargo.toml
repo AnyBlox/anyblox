@@ -1,0 +1,19 @@
+[package]
+name = "rle-simd-stateless"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+decoder-lib = { path = "../decoder-lib", default-features = false, features = [
+    "alloc",
+    "panic-handler",
+    "wasm-core",
+] }
+
+[features]
+default = []
+log = ["decoder-lib/log"]
+

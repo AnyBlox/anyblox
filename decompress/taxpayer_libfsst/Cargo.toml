@@ -1,0 +1,20 @@
+[package]
+name = "taxpayer_libfsst"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+decoder-lib = { path = "../decoder-lib", default-features = false, features = [
+    "alloc",
+    "panic-handler",
+    "wasm-core",
+] }
+lock_api = "0.4.12"
+talc = "4.4"
+
+[features]
+default = []
+log = ["decoder-lib/log"]

@@ -1,0 +1,12 @@
+# The language to output bindings in
+language = "C++"
+
+namespaces = ["anyblox", "ffi"]
+
+usize_is_size_t = true
+
+pragma_once = true
+
+[parse]
+parse_deps = true
+include = ["anyblox-format", "anyblox", "arrow"]

@@ -1,0 +1,42 @@
+type = "SELF-CONTAINED"
+version = "0.9"
+
+[schema]
+[[schema.fields]]
+name = "rid"
+type = "Int64"
+nullable = true
+
+[[schema.fields]]
+name = "SearchPhrase"
+type = "Utf8"
+nullable = true
+
+[[schema.fields]]
+name = "MobilePhoneModel"
+type = "Utf8"
+nullable = true
+
+[[schema.fields]]
+name = "URL"
+type = "Utf8"
+nullable = true
+
+[[schema.fields]]
+name = "Title"
+type = "Utf8"
+nullable = true
+
+[[schema.fields]]
+name = "Referer"
+type = "Utf8"
+nullable = true
+
+[decoder]
+name = "clickbench_fsst"
+description = "decode the ClickBench string columns using FSST"
+
+[data]
+name = "clickbench_strings_0.fsst"
+description = "Part 0 of the ClickBench string table, FSST encoded"
+count = 25067520

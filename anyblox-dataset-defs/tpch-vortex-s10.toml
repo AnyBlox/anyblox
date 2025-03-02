@@ -1,0 +1,92 @@
+type = "SELF-CONTAINED"
+version = "0.9"
+
+[schema]
+[[schema.fields]]
+name = "l_orderkey"
+type = "Int32"
+nullable = false
+
+[[schema.fields]]
+name = "l_partkey"
+type = "Int32"
+nullable = false
+
+[[schema.fields]]
+name = "l_suppkey"
+type = "Int32"
+nullable = false
+
+[[schema.fields]]
+name = "l_linenumber"
+type = "Int32"
+nullable = false
+
+[[schema.fields]]
+name = "l_quantity"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "l_extendedprice"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "l_discount"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "l_tax"
+type = "Float64"
+nullable = false
+
+[[schema.fields]]
+name = "l_returnflag"
+type = { FixedSizeBinary = 1 }
+nullable = false
+
+[[schema.fields]]
+name = "l_linestatus"
+type = { FixedSizeBinary = 1 }
+nullable = false
+
+[[schema.fields]]
+name = "l_shipdate"
+type = "Date32"
+nullable = false
+
+[[schema.fields]]
+name = "l_commitdate"
+type = "Date32"
+nullable = false
+
+[[schema.fields]]
+name = "l_receiptdate"
+type = "Date32"
+nullable = false
+
+[[schema.fields]]
+name = "l_shipinstruct"
+type = "Utf8View"
+nullable = false
+
+[[schema.fields]]
+name = "l_shipmode"
+type = "Utf8View"
+nullable = false
+
+[[schema.fields]]
+name = "l_comment"
+type = "Utf8View"
+nullable = false
+
+[decoder]
+name = "tpch_vortex"
+description = "decode the TPC-H l_linestatus column encoded with Parquet's bitpacking-RLE hybrid"
+
+[data]
+name = "tpch_vortex"
+description = "The TPC-H (scale 10) l_linestatus column dictionary and rle-bitpack encoded using Parquet's default boolean encoding"
+count = 59986052

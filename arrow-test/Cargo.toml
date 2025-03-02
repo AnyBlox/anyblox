@@ -1,0 +1,7 @@
+[package]
+name = "arrow-test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+arrow = "52.0"

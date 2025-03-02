@@ -1,0 +1,12 @@
+[submodule "vendored/arrow-rs"]
+	path = vendored/arrow-rs
+	url = git@github.com:V0ldek/arrow-rs.git
+[submodule "vendored/datafusion-comet"]
+	path = vendored/datafusion-comet
+	url = git@github.com:V0ldek/datafusion-comet.git
+[submodule "vendored/vortex"]
+	path = vendored/vortex
+	url = git@github.com:V0ldek/vortex.git
+[submodule "vendored/anyblox_root"]
+	path = vendored/anyblox_root
+	url = git@github.com:maxi-k/anyblox_root.git

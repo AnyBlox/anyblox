@@ -1,0 +1,55 @@
+[package]
+name = "dataset-utils"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.79"
+arrow = { workspace = true }
+chrono = { version = "0.4.38", features = ["serde"] }
+clap = { version = "4.4.18", features = ["derive"] }
+compress = { path = "../compress" }
+csv = "1.3"
+futures = "0.3"
+fsst-rs = { path = "../fsst-rs" }
+glob = "0.3.2"
+indicatif = "0.17.9"
+memmap2 = "0.9.5"
+parquet = { workspace = true, features = ["async", "tokio"] }
+rayon = "1.10"
+rust_decimal = "1.36"
+serde = { version = "1.0", features = ["derive"] }
+tokio = { workspace = true }
+vortex = { workspace = true, features = ["compressor"] }
+
+[[bin]]
+name = "as_parquet"
+path = "src/as_parquet.rs"
+
+[[bin]]
+name = "clickbench_fsst"
+path = "src/clickbench_fsst.rs"
+
+[[bin]]
+name = "clickbench_vortex"
+path = "src/clickbench_vortex.rs"
+
+[[bin]]
+name = "rle_linestatus"
+path = "src/rle_linestatus.rs"
+
+[[bin]]
+name = "single_column_rle"
+path = "src/single_column_rle.rs"
+
+[[bin]]
+name = "taxpayer"
+path = "src/taxpayer.rs"
+
+[[bin]]
+name = "tpch_lineitem"
+path = "src/tpch_lineitem.rs"
+
+[[bin]]
+name = "tpch_vortex"
+path = "src/tpch_vortex.rs"

@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  arrow-flight-decoder:
+    build: .
+    container_name: arrow-flight-decoder
+    networks:
+      arrow-flight-demo:
+    ports:
+      - 50051:50051
+    environment:
+      - RUST_LOG=info,decoder=debug
+
+networks:
+  arrow-flight-demo:
