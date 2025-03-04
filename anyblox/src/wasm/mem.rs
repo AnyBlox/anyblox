@@ -398,7 +398,7 @@ impl MmapMemory {
         // Correctness relies on `hook` not setting the hook-relevant fields of self
         // until it successfully performs all the work, or else the drop might try to destroy a hook
         // that doesn't exist.
-        this.hook(dataset)?;
+        this.hook(dataset, 0)?;
 
         Ok(this)
     }
@@ -509,6 +509,7 @@ impl MmapMemory {
     fn reset(&self, initial_pages: usize, dataset: &Dataset) -> Result<(), Error> {
         use rustix::mm::{mprotect, MprotectFlags};
         // Unhook.
+        let old_hook_len = self.hook_mmap_len.get();
         self.destroy_hook()?;
         // Now grow the initial pages if necessary.
         let mut current_pages = self.initial_pages.get();
@@ -532,13 +533,13 @@ impl MmapMemory {
         self.initial_pages.set(current_pages);
         self.accessible_pages.set(current_pages);
         // Rehook.
-        self.hook(dataset)?;
+        self.hook(dataset, old_hook_len)?;
 
         Ok(())
     }
 
     #[instrument]
-    fn hook(&self, dataset: &Dataset) -> Result<(), Error> {
+    fn hook(&self, dataset: &Dataset, possible_hole: usize) -> Result<(), Error> {
         use rustix::fd::AsRawFd;
         let initial_pages = self.initial_pages.get();
         tracing::debug!(
@@ -594,6 +595,27 @@ impl MmapMemory {
 
         unsafe {
             madvise(hook_mmap, hook_map_len, Advice::Sequential)?;
+        };
+
+        // Plug in the hole.
+        // After unmapping a dataset *all* of the mappings in that area are destroyed.
+        // We mapped a new one, but if it is shorter than the previous one then there will be
+        // an unmapped hole right after.
+        // This only happens if the previous hook was larger.
+        if possible_hole > hook_map_len {
+            let new_hook_full_os_pages = hook_map_len.div_ceil(page_size());
+            let old_hook_full_os_pages = possible_hole.div_ceil(page_size());
+            let hole_pages = old_hook_full_os_pages - new_hook_full_os_pages;
+            let hole_start = unsafe { hook_mmap.add(new_hook_full_os_pages * page_size()) };
+            tracing::debug!("patching a hole of {hole_pages} OS pages starting at {hole_start:?} due to len difference (old {possible_hole}, new {hook_map_len})");
+            unsafe {
+                mmap_anonymous(
+                    hole_start,
+                    hole_pages * page_size(),
+                    ProtFlags::empty(), // PROT_NONE
+                    MapFlags::PRIVATE | MapFlags::NORESERVE | MapFlags::FIXED,
+                )
+            }?;
         };
 
         // Initialize the state page.
