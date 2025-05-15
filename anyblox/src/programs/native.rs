@@ -1,6 +1,7 @@
 use std::{ptr, sync::Mutex};
 
 use crate::ColumnProjection;
+mod clickbench_vortex;
 mod rle;
 mod rle_linestatus;
 mod rle_simd_avx2;
@@ -15,6 +16,8 @@ mod tpch_vortex;
 pub struct NativeProgram {
     inner: Mutex<Box<dyn NativeImpl>>,
 }
+
+unsafe impl Send for NativeProgram{}
 
 #[derive(Debug)]
 pub struct NativeBatch {
@@ -213,6 +216,12 @@ impl NativeProgram {
     pub fn taxpayer_libfsst() -> Self {
         Self {
             inner: Mutex::new(Box::new(taxpayer_libfsst::NativeTaxpayerLibfsstImpl::default())),
+        }
+    }
+
+    pub fn clickbench_vortex() -> Self {
+        Self {
+            inner: Mutex::new(Box::new(clickbench_vortex::NativeClickbenchVortexImpl::default())),
         }
     }
 

@@ -356,8 +356,7 @@ fn default_wasmtime_engine() -> Result<wasmtime::Engine> {
     let mut config = Config::new();
     config
         .cranelift_opt_level(OptLevel::SpeedAndSize)
-        .allocation_strategy(wasmtime::InstanceAllocationStrategy::OnDemand)
-        .async_support(false);
+        .allocation_strategy(wasmtime::InstanceAllocationStrategy::OnDemand);
     wasmtime::Engine::new(&config)
 }
 

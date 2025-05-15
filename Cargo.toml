@@ -13,13 +13,13 @@ members = [
     "anyblox-format",
     "anyblox-bench",
     "anyblox-parquet",
-    "arrow-flight-demo",
+    "arrow-flight-demo", "anyblox-datafusion",
 ]
 exclude = ["vendored", "decompress"]
 resolver = "2"
 
 [workspace.package]
-version = "0.8.0"
+version = "0.10.0"
 homepage = "https://gitlab.db.in.tum.de/MatG/portable-decompress"
 repository = "https://gitlab.db.in.tum.de/MatG/portable-decompress"
 authors = ["Mateusz Gienieczko <mat@gienieczko.com>"]
@@ -42,5 +42,5 @@ lto = "fat"
 arrow = { path = "./vendored/arrow-rs/arrow" }
 arrow-flight = { path = "./vendored/arrow-rs/arrow-flight" }
 parquet = { path = "./vendored/arrow-rs/parquet" }
-tokio = { version = "1.36.0", features = ["full"] }
+tokio = { version = "1.45.0", features = ["full"] }
 vortex = { path = "./vendored/vortex/vortex" }

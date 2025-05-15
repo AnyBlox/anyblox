@@ -1,9 +1,8 @@
-use std::collections::HashMap;
 use self::native::NativeProgram;
 use self::wasm::WasmProgram;
 use crate::config::Config;
 use lru::LruCache;
-use std::sync::{Mutex, RwLock};
+use std::sync::Mutex;
 use thiserror::Error;
 use tracing::instrument;
 pub mod native;
@@ -40,6 +39,7 @@ impl Programs {
             //"trunc8" => Ok(NativeProgram::trunc8()),
             "urn:anyblox:taxpayer_fsst" => Ok(NativeProgram::taxpayer_fsst()),
             "urn:anyblox:taxpayer_libfsst" => Ok(NativeProgram::taxpayer_libfsst()),
+            "urn:anyblox:clickbench_vortex" => Ok(NativeProgram::clickbench_vortex()),
             "urn:anyblox:tpch_vortex" => Ok(NativeProgram::tpch_vortex()),
             "urn:anyblox:rle_linestatus" => Ok(NativeProgram::rle_linestatus()),
             _ => Err(Error::NoNativeImpl(name)),

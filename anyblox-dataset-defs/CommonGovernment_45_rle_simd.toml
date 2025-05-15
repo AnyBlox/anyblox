@@ -1,5 +1,5 @@
-type = "EXTENSION"
-version = "0.9"
+type = "SELF-CONTAINED"
+version = "0.10"
 
 [schema]
 [[schema.fields]]
@@ -8,7 +8,7 @@ type = "Int32"
 nullable = false
 
 [decoder]
-name = "rle_simd"
+uri = "urn:anyblox:rle_simd"
 description = "decode RLE (vectorized)"
 
 [data]

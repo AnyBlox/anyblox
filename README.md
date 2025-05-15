@@ -8,6 +8,8 @@ The main runtime lives in the `anyblox` crate. It produces the library and the `
 
 In `anyblox-bench` there is a simple CLI app that can run a given workload and output a bunch of metrics. Check the CLI documentation for details.
 
+In `anyblox-datafusion` there is the DataFusion table source for reading AnyBlox data.
+
 In `anyblox-format` we define the serialization and deserialization of the metadata files for AnyBlox. This is a library only. Most other stuff depends on it.
 
 In `anyblox-tools` there are three very important tools for working with AnyBlox and testing.

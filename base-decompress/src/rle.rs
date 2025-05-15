@@ -132,7 +132,7 @@ pub fn simd_implementation(input: &RleInput, output: &mut [u32]) {
                 let elem = unsafe { *input_ptr.add(in_idx + 1) };
                 let elem_v = unsafe { _mm512_set1_epi32(elem as i32) };
                 in_idx += 2;
-                let times = (run_len + 15) / 16;
+                let times = run_len.div_ceil(16);
                 for i in 0..times {
                     let i = i as usize;
                     unsafe { _mm512_storeu_epi32(output_ptr.add(out_idx + i * 16).cast(), elem_v) };

@@ -61,14 +61,14 @@ pub fn compress_32<W: Write>(
     block_size: usize,
     progress_bar_style: indicatif::ProgressStyle,
 ) -> Result<usize, EncodingError> {
-    assert!(block_size % 4 == 0);
+    assert!(block_size.is_multiple_of(4));
     let bytes: &[u8] = unsafe { std::slice::from_raw_parts(ints.as_ptr().cast(), ints.len() * 4) };
     let mut block_map = Vec::with_capacity(ints.len() / BLOCK_MAP_GRANULARITY);
     let mut current_count_for_map = 0;
     if bytes.len() < BYTES_IN_REG {
         return Err(EncodingError::InputTooShort);
     }
-    if bytes.len() % 4 != 0 {
+    if !bytes.len().is_multiple_of(4) {
         return Err(EncodingError::InvalidInputSize);
     }
 
@@ -189,12 +189,12 @@ pub fn compress_64<W: Write>(
     block_size: usize,
     progress_bar_style: indicatif::ProgressStyle,
 ) -> Result<usize, EncodingError> {
-    assert!(block_size % 4 == 0);
+    assert!(block_size.is_multiple_of(4));
     let bytes: &[u8] = unsafe { std::slice::from_raw_parts(ints.as_ptr().cast(), ints.len() * 8) };
     if bytes.len() < BYTES_IN_REG {
         return Err(EncodingError::InputTooShort);
     }
-    if bytes.len() % 8 != 0 {
+    if !bytes.len().is_multiple_of(8) {
         return Err(EncodingError::InvalidInputSize);
     }
 

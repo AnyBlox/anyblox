@@ -24,6 +24,13 @@ SPARK_TPCH_PARQUET = "./spark-results-parquet-s20"
 SPARK_CLICKBENCH_ANYBLOX = "./spark-results-clickbench-t1"
 SPARK_CLICKBENCH_PARQUET = "./spark-results-clickbench-parquet-t1"
 
+DATAFUSION_TPCH_ANYBLOX = "./datafusion-results-s20"
+DATAFUSION_TPCH_NATIVE = "./datafusion-results-native-s20"
+DATAFUSION_TPCH_PARQUET = "./datafusion-results-parquet-s20"
+DATAFUSION_CLICKBENCH_ANYBLOX = "./datafusion-results-clickbench"
+DATAFUSION_CLICKBENCH_NATIVE = "./datafusion-results-native-clickbench"
+DATAFUSION_CLICKBENCH_PARQUET = "./datafusion-results-parquet-clickbench"
+
 COL_NATIVE_PRIMARY = '#02CC78'
 COL_NATIVE_SECONDARY = '#01663C'
 COL_DUCKDB_PRIMARY = '#FFF100'
@@ -39,11 +46,14 @@ COL_MISSING_NATIVE = '#888888'
 
 TPCH_QS = ["1", "3", "4", "5", "6", "7", "8", "9", "10",
       "12", "14", "15", "17", "18", "19", "20", "21"]
+TPCH_QS_DATAFUSION = ["1", "3", "4", "5", "6", "7", "8", "9", "10",
+      "12", "14", "15", "17", "19", "20", "21"]
 TPCH_QS_SELECTED = ["1", "10", "12", "21"]
 tpch_xs = np.arange(len(TPCH_QS))
 tpch_xs_selected = np.arange(len(TPCH_QS_SELECTED))
 
 CLICKBENCH_QS = ["6", "11", "12", "13", "14", "15", "17", "18", "19", "21", "22", "23", "24", "26", "27", "29", "31", "32", "33", "34", "37", "38", "39", "40"]
+CLICKBENCH_QS_DATAFUSION = ["6", "11", "12", "17", "18", "19", "21", "22", "23", "24", "31", "32", "33", "37", "38", "39", "40"]
 CLICKBENCH_SPARK_QS = ["6", "11", "12", "13", "14", "15", "17", "18", "19", "21", "22", "23", "26", "27", "31", "32", "33", "34"]
 CLICKBENCH_QS_SELECTED = ["24", "29"]
 clickbench_xs = np.arange(len(CLICKBENCH_QS))
@@ -65,6 +75,7 @@ plt.rcParams["ytick.labelsize"] = LABELS_FONT_SIZE
 plt.rcParams["axes.labelsize"] = LABELS_FONT_SIZE
 plt.rcParams["axes.titlesize"] = TITLES_FONT_SIZE
 plt.rcParams["legend.fontsize"] = LEGEND_FONT_SIZE
+plt.rcParams['hatch.linewidth'] = 5
 
 def plot_totals_once(ax, data, colors_primary, colors_secondary, qs, no_native=False, ratio=1):
     scans = [sum([np.median(list(y / ratio for [x, y] in d[q])) for q in qs]) for d in data]
@@ -79,14 +90,13 @@ def plot_totals_once(ax, data, colors_primary, colors_secondary, qs, no_native=F
         artificial_queries = [0.0] + queries
         artificial_colors_secondary = [COL_MISSING_NATIVE] + colors_secondary
         artificial_colors_primary = [COL_MISSING_NATIVE] + colors_primary
-        hatches = ['/'] + ([''] * len(scans))
-        artificial_rects_scans = [ax.bar(xs + i * width, [scan], width * 0.9, color=artificial_colors_secondary[i], hatch=hatches[i]) for i, scan in enumerate(artificial_scans)]
-        artificial_rects_queries = [ax.bar(xs + i * width, [query], width * 0.9, color=artificial_colors_primary[i], hatch=hatches[i], bottom=artificial_scans[i]) for i, query in enumerate(artificial_queries)]
+        artificial_rects_scans = [ax.bar(xs + i * width, [scan], width * 0.9, color=artificial_colors_secondary[i], hatch='/', edgecolor='lightgray') for i, scan in enumerate(artificial_scans)]
+        artificial_rects_queries = [ax.bar(xs + i * width, [query], width * 0.9, color=artificial_colors_primary[i], bottom=artificial_scans[i]) for i, query in enumerate(artificial_queries)]
 
         rects_scans = artificial_rects_scans[1:]
         rects_queries = artificial_rects_queries[1:]
     else:
-        rects_scans = [ax.bar(xs + i * width, [scan], width * 0.9, color=colors_secondary[i]) for i, scan in enumerate(scans)]
+        rects_scans = [ax.bar(xs + i * width, [scan], width * 0.9, color=colors_secondary[i], hatch='/', edgecolor='lightgray') for i, scan in enumerate(scans)]
         rects_queries = [ax.bar(xs + i * width, [query], width * 0.9, color=colors_primary[i], bottom=scans[i]) for i, query in enumerate(queries)]
     
     ax.set_ylim(ymin=0)
@@ -113,7 +123,7 @@ def plot_selected_once(ax, data, colors_primary, colors_secondary, qs, ratio=1):
     width = 1 / (len(data) + 1)
     xs = np.arange(len(qs))
 
-    rects_scans = [ax.bar(xs + i * width, scan, 0.9 * width , color=colors_secondary[i]) for i, scan in enumerate(scans)]
+    rects_scans = [ax.bar(xs + i * width, scan, 0.9 * width , color=colors_secondary[i], hatch='/', edgecolor='lightgray') for i, scan in enumerate(scans)]
     rects_queries = [ax.bar(xs + i * width, query, 0.9 * width, color=colors_primary[i], bottom=scans[i]) for i, query in enumerate(queries)]
     
     ax.set_ylim(ymin=0)
@@ -135,7 +145,7 @@ def plot_selected_once(ax, data, colors_primary, colors_secondary, qs, ratio=1):
 
 def plot_main():
     # figure, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(ncols=5, gridspec_kw={'width_ratios': [2, 2, 2, 3, 3]})
-    figure_total, (ax1, ax2, ax3, ax4) = plt.subplots(ncols=4)
+    figure_total, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(ncols=6)
 
     with open(f"{DUCKDB_TPCH_ANYBLOX}/tpch-t1-results.json", 'r') as file:
         anyblox_t1_data = json.load(file)
@@ -146,14 +156,14 @@ def plot_main():
     with open(f"{DUCKDB_TPCH_RAW}/tpch-t1-results.json", 'r') as file:
         raw_t1_data = json.load(file)
 
-    plot_totals_once(ax1,
+    plot_totals_once(ax2,
         [raw_t1_data, anyblox_t1_data, parquet_t1_data],
         [COL_DUCKDB_PRIMARY, COL_ANYBLOX_PRIMARY, COL_PARQUET_PRIMARY],
         [COL_DUCKDB_SECONDARY, COL_ANYBLOX_SECONDARY, COL_PARQUET_SECONDARY],
         TPCH_QS
     )
-    ax1.set_title('TPC-H (DuckDB)')
-    ax1.set_ylabel('latency (s)')
+    ax2.set_title('TPC-H (DuckDB)')
+    ax2.set_ylabel('latency (s)')
     #ax1.set_xticks([1/4])
     #ax1.set_xticklabels(["total"])
 
@@ -166,13 +176,13 @@ def plot_main():
     with open(f"{DUCKDB_CLICKBENCH_RAW}/clickbench-t1-results.json", 'r') as file:
         raw_t1_data = json.load(file)
 
-    (scan_rects, query_rects) = plot_totals_once(ax2,
+    (scan_rects, query_rects) = plot_totals_once(ax3,
         [raw_t1_data, anyblox_t1_data, parquet_t1_data],
         [COL_DUCKDB_PRIMARY, COL_ANYBLOX_PRIMARY, COL_PARQUET_PRIMARY],
         [COL_DUCKDB_SECONDARY, COL_ANYBLOX_SECONDARY, COL_PARQUET_SECONDARY],
         CLICKBENCH_QS
     )
-    ax2.set_title('ClickBench (DuckDB)')
+    ax3.set_title('ClickBench (DuckDB)')
     #ax2.set_xticks([1/4])
     #ax2.set_xticklabels(["total"])
 
@@ -182,7 +192,7 @@ def plot_main():
     with open(f"{SPARK_TPCH_PARQUET}/tpch-t1-results.json", 'r') as file:
        parquet_t1_data = json.load(file)
 
-    plot_totals_once(ax3,
+    plot_totals_once(ax4,
        [anyblox_t1_data, parquet_t1_data],
        [COL_ANYBLOX_PRIMARY, COL_PARQUET_PRIMARY],
        [COL_ANYBLOX_SECONDARY, COL_PARQUET_SECONDARY],
@@ -190,7 +200,7 @@ def plot_main():
        ratio=1000,
        no_native=True
     )
-    ax3.set_title('TPC-H (Spark)')
+    ax4.set_title('TPC-H (Spark)')
     #ax3.set_xticks([1/6])
     #ax3.set_xticklabels(["total"])
 
@@ -199,7 +209,7 @@ def plot_main():
     with open(f"{SPARK_CLICKBENCH_PARQUET}/clickbench-t1-results.json", 'r') as file:
        parquet_t1_data = json.load(file)
 
-    plot_totals_once(ax4,
+    plot_totals_once(ax5,
        [anyblox_t1_data, parquet_t1_data],
        [COL_ANYBLOX_PRIMARY, COL_PARQUET_PRIMARY],
        [COL_ANYBLOX_SECONDARY, COL_PARQUET_SECONDARY],
@@ -208,18 +218,50 @@ def plot_main():
        no_native=True
     )
 
-    ax4.set_title('ClickBench (Spark)†')
+    ax5.set_title('ClickBench (Spark)†')
     #ax4.set_xticks([1/6])
     #ax4.set_xticklabels(["total"])
 
+    with open(f"{DATAFUSION_TPCH_ANYBLOX}/tpch-t1-results.json", 'r') as file:
+        anyblox_t1_data = json.load(file)
+    with open(f"{DATAFUSION_TPCH_NATIVE}/tpch-t1-results.json", 'r') as file:
+        native_t1_data = json.load(file)
+    with open(f"{DATAFUSION_TPCH_PARQUET}/tpch-t1-results.json", 'r') as file:
+        parquet_t1_data = json.load(file)
+
+    (df_scans_rects, df_query_rects) = plot_totals_once(ax1,
+        [native_t1_data, anyblox_t1_data, parquet_t1_data],
+        [COL_NATIVE_PRIMARY, COL_ANYBLOX_PRIMARY, COL_PARQUET_PRIMARY],
+        [COL_NATIVE_SECONDARY, COL_ANYBLOX_SECONDARY, COL_PARQUET_SECONDARY],
+        TPCH_QS_DATAFUSION)
+
+    ax1.set_title('TPC-H (DataFusion)')
+    
+    with open(f"{DATAFUSION_CLICKBENCH_ANYBLOX}/clickbench-t1-results.json", 'r') as file:
+       anyblox_t1_data = json.load(file)
+    with open(f"{DATAFUSION_CLICKBENCH_NATIVE}/clickbench-t1-results.json", 'r') as file:
+       native_t1_data = json.load(file)
+    with open(f"{DATAFUSION_CLICKBENCH_PARQUET}/clickbench-t1-results.json", 'r') as file:
+       parquet_t1_data = json.load(file)
+
+    plot_totals_once(ax6,
+       [native_t1_data, anyblox_t1_data, parquet_t1_data],
+       [COL_NATIVE_PRIMARY, COL_ANYBLOX_PRIMARY, COL_PARQUET_PRIMARY],
+       [COL_NATIVE_SECONDARY, COL_ANYBLOX_SECONDARY, COL_PARQUET_SECONDARY],
+       CLICKBENCH_QS_DATAFUSION)
+
+    ax6.set_title('ClickBench (DataFusion)')
+
     def shrink(ax):
         box = ax.get_position()
-        ax.set_position([box.x0, box.y0, box.width, box.height * 0.85])
+        ax.set_position([box.x0, box.y0, box.width, box.height * 0.8])
 
-    legend_rects = [item for sublist in [[s, r] for s, r in zip(scan_rects, query_rects)] for item in sublist]
+    df_scans_rects.append(scan_rects[0])
+    df_query_rects.append(query_rects[0])
+    legend_rects = [item for sublist in [[s, r] for s, r in zip(df_scans_rects, df_query_rects)] for item in sublist]
     figure_total.legend(legend_rects, [
-                'native table scan', 'native table rest', 'anyblox scan', 'anyblox rest', 'parquet scan', 'parquet rest'],
-                loc='upper center', ncol=6)
+                'native Vortex scan', 'native Vortex rest', 'anyblox scan', 'anyblox rest', 'parquet scan', 'parquet rest', 'DuckDB table scan', 'DuckDB table rest'],
+                loc='upper center', ncol=4)
 
     figure_total.set_size_inches(2 * 1920 / PX_PER_IN, 1080 / PX_PER_IN)
     figure_total.tight_layout()
@@ -227,6 +269,8 @@ def plot_main():
     shrink(ax2)
     shrink(ax3)
     shrink(ax4)
+    shrink(ax5)
+    shrink(ax6)
     figure_total.savefig("totals.pdf")
     
     # SELECTED
