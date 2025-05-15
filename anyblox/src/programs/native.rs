@@ -16,6 +16,8 @@ pub struct NativeProgram {
     inner: Mutex<Box<dyn NativeImpl>>,
 }
 
+unsafe impl Send for NativeProgram{}
+
 #[derive(Debug)]
 pub struct NativeBatch {
     pub length: u32,

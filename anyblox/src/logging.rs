@@ -3,6 +3,7 @@ use std::{
     fs, io,
     path::{Path, PathBuf},
 };
+use tokio::io::AsyncWriteExt;
 use tracing_subscriber::registry::LookupSpan;
 
 struct LogFiles {
@@ -95,11 +96,14 @@ pub fn init_tracing(config: &Config) -> Result<Tracing, RuntimeError> {
         .with(fmt_subscriber)
         .with(pretty_fmt_subscriber);
 
+    let mut tracing = Tracing::new(guard);
+
     #[cfg(feature = "opentelemetry")]
     {
         let result = if config.enable_opentelemetry() {
             let oltp_endpoint = config.oltp_collector_endpoint().unwrap_or(default_oltp_endpoint());
-            let opentelemetry_subscriber = configure_opentelemetry(oltp_endpoint)?;
+            let (opentelemetry_subscriber, opentelemetry_provider) = configure_opentelemetry(oltp_endpoint)?;
+            tracing.set_open_telemetry(opentelemetry_provider);
             base_layers.with(opentelemetry_subscriber).try_init()
         } else {
             base_layers.try_init()
@@ -117,42 +121,64 @@ pub fn init_tracing(config: &Config) -> Result<Tracing, RuntimeError> {
         }
     }
 
-    Ok(Tracing { _guard: guard })
+    Ok(tracing)
 }
 
 #[cfg(feature = "opentelemetry")]
 fn configure_opentelemetry<S: tracing::Subscriber + for<'span> LookupSpan<'span>>(
     oltp_endpoint: &str,
 ) -> Result<
-    tracing_opentelemetry::OpenTelemetryLayer<S, opentelemetry_sdk::trace::Tracer>,
-    opentelemetry::trace::TraceError,
+    (
+        tracing_opentelemetry::OpenTelemetryLayer<S, opentelemetry_sdk::trace::Tracer>,
+        opentelemetry_sdk::trace::SdkTracerProvider,
+    ),
+    opentelemetry_otlp::ExporterBuildError,
 > {
     use opentelemetry::{trace::TracerProvider, KeyValue};
     use opentelemetry_otlp::WithExportConfig;
     use opentelemetry_sdk::{trace, Resource};
-    let resource = Resource::new(vec![KeyValue::new("service.name", "anyblox")]);
-    let trace_config = trace::Config::default().with_resource(resource);
+    let resource = Resource::builder_empty()
+        .with_attribute(KeyValue::new("service.name", "anyblox"))
+        .build();
 
-    let exporter = opentelemetry_otlp::new_exporter().tonic().with_endpoint(oltp_endpoint);
-    let provider = opentelemetry_otlp::new_pipeline()
-        .tracing()
-        .with_exporter(exporter)
-        .with_trace_config(trace_config)
-        .install_batch(opentelemetry_sdk::runtime::Tokio)?;
+    let exporter = opentelemetry_otlp::SpanExporter::builder()
+        .with_http()
+        .with_endpoint(oltp_endpoint)
+        .build()?;
+    let provider = opentelemetry_sdk::trace::SdkTracerProvider::builder()
+        .with_resource(resource)
+        .with_simple_exporter(exporter)
+        .build();
 
     let tracer = provider.tracer("anyblox");
     let tracing = tracing_opentelemetry::layer().with_tracer(tracer);
 
-    Ok(tracing)
+    Ok((tracing, provider))
 }
 
 pub struct Tracing {
     _guard: tracing_appender::non_blocking::WorkerGuard,
+    open_telemetry_tracer: Option<opentelemetry_sdk::trace::SdkTracerProvider>,
+}
+
+impl Tracing {
+    fn new(guard: tracing_appender::non_blocking::WorkerGuard) -> Self {
+        Self {
+            _guard: guard,
+            open_telemetry_tracer: None,
+        }
+    }
+
+    fn set_open_telemetry(&mut self, provider: opentelemetry_sdk::trace::SdkTracerProvider) {
+        self.open_telemetry_tracer = Some(provider);
+    }
 }
 
 #[cfg(feature = "opentelemetry")]
 impl Drop for Tracing {
     fn drop(&mut self) {
-        opentelemetry::global::shutdown_tracer_provider();
+        if let Some(provider) = &self.open_telemetry_tracer {
+            let _ = provider.shutdown();
+        }
     }
 }

@@ -33,6 +33,7 @@ use wasm::mem::WasmMemoryManager;
 
 pub use crate::programs::sinks;
 pub use column_projection::{ColumnIndexError, ColumnProjection};
+use static_assertions::assert_not_impl_any;
 
 pub struct AnyBloxRuntime {
     _config: Config,
@@ -208,10 +209,9 @@ fn default_config() -> &'static wasmtime::Config {
         let mut config = Config::new();
         config
             .cranelift_opt_level(OptLevel::SpeedAndSize)
-            .allocation_strategy(wasmtime::InstanceAllocationStrategy::OnDemand)
-            //.cranelift_pcc(true)
-            //.profiler(wasmtime::ProfilingStrategy::JitDump)
-            .async_support(false);
+            .allocation_strategy(wasmtime::InstanceAllocationStrategy::OnDemand);
+        //.cranelift_pcc(true)
+        //.profiler(wasmtime::ProfilingStrategy::JitDump)
 
         config
     })
@@ -263,6 +263,8 @@ pub struct AnyBloxJob {
     utf8_validator: Option<arrow::Utf8Validator>,
     projection: ColumnProjection,
 }
+
+assert_not_impl_any!(AnyBloxJob: Send, Sync);
 
 pub struct NativeJob {
     program: programs::native::NativeProgram,
@@ -357,7 +359,7 @@ pub enum RuntimeError {
     ArrowError(#[from] ::arrow::error::ArrowError),
     #[cfg(feature = "opentelemetry")]
     #[error(transparent)]
-    OpenTelemetryError(#[from] opentelemetry::trace::TraceError),
+    OpenTelemetryError(#[from] opentelemetry_otlp::ExporterBuildError),
     #[error("the current runtime API version {0} cannot run the bundle versioned at {1}")]
     IncompatibleBundleVersion(version::AnyBloxVersion, version::AnyBloxVersion),
     #[error("expected the AnyBlox file to be an Extension, but it is Self-Contained")]
